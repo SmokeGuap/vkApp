@@ -51,7 +51,7 @@ export const Fact = ({ nextPanel, id }: Props) => {
     refetch();
   };
 
-  if (isError) return <Text>{error}</Text>;
+  if (isError) return <Text>{error.message}</Text>;
 
   return (
     <Panel id={id}>
