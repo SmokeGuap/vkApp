@@ -1,15 +1,9 @@
 import { useState } from 'react';
 import {
   AppRoot,
-  Button,
-  CellButton,
-  FormItem,
-  Group,
-  Panel,
   PanelHeader,
   SplitCol,
   SplitLayout,
-  Textarea,
   View,
   usePlatform,
 } from '@vkontakte/vkui';
