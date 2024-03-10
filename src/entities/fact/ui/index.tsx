@@ -10,6 +10,8 @@ import {
   Textarea,
 } from '@vkontakte/vkui';
 
+import styles from './Form.module.scss';
+
 import { getFact } from '../api/getFact';
 
 type Props = {
@@ -27,7 +29,7 @@ export const Fact = ({ nextPanel, id }: Props) => {
   return (
     <Panel id={id}>
       <PanelHeader>Форма 1</PanelHeader>
-      <Group>
+      <Group className={styles.form}>
         <FormItem top='Факт'>
           <Textarea
             value={fact}
@@ -37,10 +39,10 @@ export const Fact = ({ nextPanel, id }: Props) => {
           <Spacing size={16} />
           <Button onClick={handleButton}>Получить факт</Button>
         </FormItem>
-        <CellButton onClick={() => nextPanel('panel2')}>
-          Перейти на вторую форму
-        </CellButton>
       </Group>
+      <CellButton onClick={() => nextPanel('panel2')}>
+        Перейти на вторую форму
+      </CellButton>
     </Panel>
   );
 };

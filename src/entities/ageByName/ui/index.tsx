@@ -8,12 +8,14 @@ import {
   PanelHeader,
   Spacing,
   Textarea,
-  Text,
   Header,
 } from '@vkontakte/vkui';
 
-import { getAge } from '../api/getAge';
 import { useDebounce } from 'src/shared/hooks';
+
+import styles from './Form.module.scss';
+
+import { getAge } from '../api/getAge';
 
 type Props = {
   id: string;
@@ -49,27 +51,32 @@ export const AgeByName = ({ nextPanel, id }: Props) => {
     });
   };
 
+  const updateName = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (/^[a-zA-Z]+$/.test(e.target.value)) {
+      setName(e.target.value);
+      setIsComplete(false);
+    }
+  };
+
   return (
     <Panel id={id}>
       <PanelHeader>Форма 2</PanelHeader>
-      <Group>
+      <Group className={styles.form}>
         <FormItem top='Возраст'>
           <Textarea
+            rows={1}
             value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              setIsComplete(false);
-            }}
+            onChange={(e) => updateName(e)}
             placeholder='Узнать возраст по имени...'
           />
           <Spacing size={16} />
-          <Button onClick={handleButton}>Получить факт</Button>
+          <Button onClick={handleButton}>Узнать возраст</Button>
         </FormItem>
         <Header mode='primary'>Возраст: {age}</Header>
-        <CellButton onClick={() => nextPanel('panel1')}>
-          Перейти на первую форму
-        </CellButton>
       </Group>
+      <CellButton onClick={() => nextPanel('panel1')}>
+        Перейти на первую форму
+      </CellButton>
     </Panel>
   );
 };
