@@ -7,11 +7,10 @@ import {
   Group,
   Panel,
   PanelHeader,
-  Spacing,
-  Textarea,
   Header,
   Spinner,
   Text,
+  Input,
 } from '@vkontakte/vkui';
 
 import { useDebounce } from 'src/shared/hooks';
@@ -26,6 +25,7 @@ type Props = {
 };
 
 export const AgeByName = ({ nextPanel, id }: Props) => {
+  const [isEmpty, setIsEmpty] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [name, setName] = useState('');
   const [age, setAge] = useState<number>();
@@ -51,12 +51,16 @@ export const AgeByName = ({ nextPanel, id }: Props) => {
   }, [status, data]);
 
   const handleButton = () => {
-    if (isComplete || !name || isFetching) return;
+    if (isComplete || isFetching) return;
+    if (!name) {
+      setIsEmpty(true);
+      return;
+    }
     refetch();
   };
 
-  const updateName = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (/^[a-zA-Z]+$/.test(e.target.value)) {
+  const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (/^[a-zA-Z]*$/.test(e.target.value)) {
       setName(e.target.value);
       setIsComplete(false);
     }
@@ -68,18 +72,36 @@ export const AgeByName = ({ nextPanel, id }: Props) => {
     <Panel id={id}>
       <PanelHeader>Форма 2</PanelHeader>
       <Group className={styles.form}>
-        <FormItem top='Возраст'>
-          <Textarea
-            rows={1}
-            value={name}
-            onChange={(e) => updateName(e)}
-            placeholder='Узнать возраст по имени...'
-          />
-          <Spacing size={16} />
-          <Button onClick={handleButton}>Узнать возраст</Button>
-        </FormItem>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <FormItem
+            htmlFor='age'
+            top='Возраст'
+            status={isEmpty ? 'error' : 'default'}
+            bottom={isEmpty && 'Пожалуйста, введите электронную почту'}
+          >
+            <Input
+              onFocus={() => setIsEmpty(false)}
+              id='age'
+              type='text'
+              placeholder='Узнать возраст по имени...'
+              value={name}
+              onChange={(e) => updateName(e)}
+            />
+          </FormItem>
+          <FormItem>
+            <Button type='submit' onClick={handleButton}>
+              Узнать возраст
+            </Button>
+          </FormItem>
+        </form>
         <Header mode='primary'>
-          {isFetching ? <Spinner /> : `Возраст: ${age ? age : ''}`}
+          {isFetching ? (
+            <Spinner />
+          ) : age ? (
+            `Возраст: ${age ? age : ''}`
+          ) : (
+            `Ни одного человека с таким именем не найдено`
+          )}
         </Header>
       </Group>
       <CellButton onClick={() => nextPanel('panel1')}>

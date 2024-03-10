@@ -7,7 +7,6 @@ import {
   Group,
   Panel,
   PanelHeader,
-  Spacing,
   Spinner,
   Text,
   Textarea,
@@ -68,8 +67,11 @@ export const Fact = ({ nextPanel, id }: Props) => {
               disabled={!fact}
             />
           )}
-          <Spacing size={16} />
-          <Button onClick={handleButton}>Получить факт</Button>
+        </FormItem>
+        <FormItem>
+          <Button type='submit' onClick={handleButton}>
+            Получить факт
+          </Button>
         </FormItem>
       </Group>
       <CellButton onClick={() => nextPanel('panel2')}>
