@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import {
   Button,
@@ -7,6 +8,8 @@ import {
   Panel,
   PanelHeader,
   Spacing,
+  Spinner,
+  Text,
   Textarea,
 } from '@vkontakte/vkui';
 
@@ -24,9 +27,17 @@ export const Fact = ({ nextPanel, id }: Props) => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleButton = () => {
-    getFact().then((data) => setFact(data.fact));
-  };
+  const { status, data, refetch, isFetching, isError, error } = useQuery({
+    queryKey: ['getFact'],
+    queryFn: getFact,
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (status === 'success') {
+      setFact(data.fact);
+    }
+  }, [status, data]);
 
   useEffect(() => {
     textareaRef.current?.focus();
@@ -36,17 +47,27 @@ export const Fact = ({ nextPanel, id }: Props) => {
     );
   }, [fact]);
 
+  const handleButton = () => {
+    refetch();
+  };
+
+  if (isError) return <Text>{error}</Text>;
+
   return (
     <Panel id={id}>
       <PanelHeader>Форма 1</PanelHeader>
       <Group className={styles.form}>
         <FormItem top='Факт'>
-          <Textarea
-            getRef={textareaRef}
-            value={fact}
-            placeholder='Здесь будет факт...'
-            disabled={!fact}
-          />
+          {isFetching ? (
+            <Spinner />
+          ) : (
+            <Textarea
+              getRef={textareaRef}
+              value={fact}
+              placeholder='Здесь будет факт...'
+              disabled={!fact}
+            />
+          )}
           <Spacing size={16} />
           <Button onClick={handleButton}>Получить факт</Button>
         </FormItem>
