@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import {
   AppRoot,
+  Button,
   CellButton,
+  FormItem,
   Group,
   Panel,
   PanelHeader,
   SplitCol,
   SplitLayout,
+  Textarea,
   View,
   usePlatform,
 } from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css';
+import '@vkontakte/vkui/dist/cssm/styles/themes.css';
+
+import { Fact } from 'src/entities/fact';
+import { AgeByName } from 'src/entities/ageByName';
 
 const App = () => {
   const platform = usePlatform();
@@ -24,24 +30,8 @@ const App = () => {
       >
         <SplitCol autoSpaced>
           <View activePanel={activePanel}>
-            <Panel id='panel1'>
-              <PanelHeader>Panel 1</PanelHeader>
-              <Group>
-                <div style={{ height: 200 }}></div>
-                <CellButton onClick={() => setActivePanel('panel2')}>
-                  Go to panel 2
-                </CellButton>
-              </Group>
-            </Panel>
-            <Panel id='panel2'>
-              <PanelHeader>Panel 2</PanelHeader>
-              <Group>
-                <div style={{ height: 200 }}></div>
-                <CellButton onClick={() => setActivePanel('panel1')}>
-                  Go to panel 1
-                </CellButton>
-              </Group>
-            </Panel>
+            <Fact id='panel1' nextPanel={() => setActivePanel('panel2')} />
+            <AgeByName id='panel2' nextPanel={() => setActivePanel('panel1')} />
           </View>
         </SplitCol>
       </SplitLayout>
