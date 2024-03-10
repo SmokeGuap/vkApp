@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import {
   Button,
   CellButton,
@@ -5,10 +6,11 @@ import {
   Group,
   Panel,
   PanelHeader,
+  Spacing,
   Textarea,
 } from '@vkontakte/vkui';
+
 import { getFact } from '../api/getFact';
-import { useRef, useState } from 'react';
 
 type Props = {
   id: string;
@@ -32,6 +34,7 @@ export const Fact = ({ nextPanel, id }: Props) => {
             placeholder='Здесь будет факт...'
             disabled={!fact}
           />
+          <Spacing size={16} />
           <Button onClick={handleButton}>Получить факт</Button>
         </FormItem>
         <CellButton onClick={() => nextPanel('panel2')}>
