@@ -15,8 +15,6 @@ import {
 
 import { useDebounce } from 'src/shared/hooks';
 
-import styles from './Form.module.scss';
-
 import { getAge } from '../api/getAge';
 
 type Props = {
@@ -71,19 +69,19 @@ export const AgeByName = ({ nextPanel, id }: Props) => {
   return (
     <Panel id={id}>
       <PanelHeader>Форма 2</PanelHeader>
-      <Group className={styles.form}>
+      <Group>
         <form onSubmit={(e) => e.preventDefault()}>
           <FormItem
             htmlFor='age'
-            top='Возраст'
+            top='Имя'
             status={isEmpty ? 'error' : 'default'}
-            bottom={isEmpty && 'Пожалуйста, введите электронную почту'}
+            bottom={isEmpty && 'Пожалуйста, введите имя '}
           >
             <Input
               onFocus={() => setIsEmpty(false)}
               id='age'
               type='text'
-              placeholder='Узнать возраст по имени...'
+              placeholder='Введите имя'
               value={name}
               onChange={(e) => updateName(e)}
             />
@@ -94,15 +92,17 @@ export const AgeByName = ({ nextPanel, id }: Props) => {
             </Button>
           </FormItem>
         </form>
-        <Header mode='primary'>
-          {isFetching ? (
-            <Spinner />
-          ) : age ? (
-            `Возраст: ${age ? age : ''}`
-          ) : (
-            `Ни одного человека с таким именем не найдено`
-          )}
-        </Header>
+        {age !== undefined && (
+          <Header multiline mode='primary'>
+            {isFetching ? (
+              <Spinner />
+            ) : age ? (
+              `Возраст: ${age ? age : ''}`
+            ) : (
+              `Ни одного человека с таким именем не найдено`
+            )}
+          </Header>
+        )}
       </Group>
       <CellButton onClick={() => nextPanel('panel1')}>
         Перейти на первую форму

@@ -12,7 +12,6 @@ import {
   Textarea,
 } from '@vkontakte/vkui';
 
-import styles from './Form.module.scss';
 
 import { getFact } from '../api/getFact';
 
@@ -55,7 +54,7 @@ export const Fact = ({ nextPanel, id }: Props) => {
   return (
     <Panel id={id}>
       <PanelHeader>Форма 1</PanelHeader>
-      <Group className={styles.form}>
+      <Group>
         <FormItem top='Факт'>
           {isFetching ? (
             <Spinner />
