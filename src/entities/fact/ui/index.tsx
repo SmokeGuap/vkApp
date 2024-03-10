@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Button,
   CellButton,
@@ -22,9 +22,19 @@ type Props = {
 export const Fact = ({ nextPanel, id }: Props) => {
   const [fact, setFact] = useState('');
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const handleButton = () => {
     getFact().then((data) => setFact(data.fact));
   };
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+    textareaRef.current?.setSelectionRange(
+      fact.split(' ')[0].length,
+      fact.split(' ')[0].length
+    );
+  }, [fact]);
 
   return (
     <Panel id={id}>
@@ -32,6 +42,7 @@ export const Fact = ({ nextPanel, id }: Props) => {
       <Group className={styles.form}>
         <FormItem top='Факт'>
           <Textarea
+            getRef={textareaRef}
             value={fact}
             placeholder='Здесь будет факт...'
             disabled={!fact}
